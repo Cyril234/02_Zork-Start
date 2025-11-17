@@ -11,7 +11,7 @@ import java.util.List;
 public class CommandWords {
 
 	/** Liste aller gültigen Kommandowörter im Spiel */
-	private List<String> validCommands = Arrays.asList("go", "quit", "help", "back", "investigate", "take", "drop", "inf", "map");
+	private List<String> validCommands = Arrays.asList("go", "quit", "help", "back", "investigate", "take", "drop", "inv", "map");
 
 	/**
 	 * Prüft, ob ein gegebenes Wort ein gültiges Kommando ist.

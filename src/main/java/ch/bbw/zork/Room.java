@@ -17,7 +17,7 @@ public class Room {
 	private ArrayList<Item> items = new ArrayList<>();
 	private Item itemToEnter;
 	private boolean isOpen;
-	private ConversationPice conversationPice;
+	private ConversationPiece conversationPiece;
 
 	/**
 	 * Konstruktor für einen Raum.
@@ -138,10 +138,10 @@ public class Room {
 	 * @param east Der Raum im Osten
 	 * @param south Der Raum im Süden
 	 * @param west Der Raum im Westen
-	 * @param conversationPice Das Gesprächsstück für diesen Raum
+	 * @param conversationPiece Das Gesprächsstück für diesen Raum
 	 */
-	public void setParameter(Room north, Room east, Room south, Room west, ConversationPice conversationPice) {
-		this.conversationPice = conversationPice;
+	public void setParameter(Room north, Room east, Room south, Room west, ConversationPiece conversationPiece) {
+		this.conversationPiece = conversationPiece;
 		exits.put("north", north);
 		exits.put("east", east);
 		exits.put("south", south);
@@ -155,10 +155,10 @@ public class Room {
 	 * @param south Der Raum im Süden
 	 * @param west Der Raum im Westen
 	 * @param items Liste der Items in diesem Raum
-	 * @param conversationPice Das Gesprächsstück für diesen Raum
+	 * @param conversationPiece Das Gesprächsstück für diesen Raum
 	 */
-	public void setParameter(Room north, Room east, Room south, Room west, ArrayList<Item> items, ConversationPice conversationPice) {
-		this.conversationPice = conversationPice;
+	public void setParameter(Room north, Room east, Room south, Room west, ArrayList<Item> items, ConversationPiece conversationPiece) {
+		this.conversationPiece = conversationPiece;
 		exits.put("north", north);
 		exits.put("east", east);
 		exits.put("south", south);
@@ -176,10 +176,10 @@ public class Room {
 	 * @param south Der Raum im Süden
 	 * @param west Der Raum im Westen
 	 * @param winnRoom true, wenn dies ein Gewinnraum ist
-	 * @param conversationPice Das Gesprächsstück für diesen Raum
+	 * @param conversationPiece Das Gesprächsstück für diesen Raum
 	 */
-	public void setParameter(Room north, Room east, Room south, Room west, boolean winnRoom, ConversationPice conversationPice) {
-		this.conversationPice = conversationPice;
+	public void setParameter(Room north, Room east, Room south, Room west, boolean winnRoom, ConversationPiece conversationPiece) {
+		this.conversationPiece = conversationPiece;
 		exits.put("north", north);
 		exits.put("east", east);
 		exits.put("south", south);
@@ -194,10 +194,10 @@ public class Room {
 	 * @param south Der Raum im Süden
 	 * @param west Der Raum im Westen
 	 * @param itemToEnter Das Item, das benötigt wird, um diesen Raum zu betreten
-	 * @param conversationPice Das Gesprächsstück für diesen Raum
+	 * @param conversationPiece Das Gesprächsstück für diesen Raum
 	 */
-	public void setParameter(Room north, Room east, Room south, Room west, Item itemToEnter, ConversationPice conversationPice) {
-		this.conversationPice = conversationPice;
+	public void setParameter(Room north, Room east, Room south, Room west, Item itemToEnter, ConversationPiece conversationPiece) {
+		this.conversationPiece = conversationPiece;
 		this.itemToEnter = itemToEnter;
 		exits.put("north", north);
 		exits.put("east", east);
@@ -213,10 +213,10 @@ public class Room {
 	 * @param west Der Raum im Westen
 	 * @param items Liste der Items in diesem Raum
 	 * @param itemToEnter Das Item, das benötigt wird, um diesen Raum zu betreten
-	 * @param conversationPice Das Gesprächsstück für diesen Raum
+	 * @param conversationPiece Das Gesprächsstück für diesen Raum
 	 */
-	public void setParameter(Room north, Room east, Room south, Room west, ArrayList<Item> items, Item itemToEnter, ConversationPice conversationPice) {
-		this.conversationPice = conversationPice;
+	public void setParameter(Room north, Room east, Room south, Room west, ArrayList<Item> items, Item itemToEnter, ConversationPiece conversationPiece) {
+		this.conversationPiece = conversationPiece;
 		this.itemToEnter = itemToEnter;
 		exits.put("north", north);
 		exits.put("east", east);
@@ -236,10 +236,10 @@ public class Room {
 	 * @param west Der Raum im Westen
 	 * @param winnRoom true, wenn dies ein Gewinnraum ist
 	 * @param itemToEnter Das Item, das benötigt wird, um diesen Raum zu betreten
-	 * @param conversationPice Das Gesprächsstück für diesen Raum
+	 * @param conversationPiece Das Gesprächsstück für diesen Raum
 	 */
-	public void setParameter(Room north, Room east, Room south, Room west, boolean winnRoom, Item itemToEnter, ConversationPice conversationPice) {
-		this.conversationPice = conversationPice;
+	public void setParameter(Room north, Room east, Room south, Room west, boolean winnRoom, Item itemToEnter, ConversationPiece conversationPiece) {
+		this.conversationPiece = conversationPiece;
 		this.itemToEnter = itemToEnter;
 		exits.put("north", north);
 		exits.put("east", east);
@@ -284,7 +284,7 @@ public class Room {
 		return isOpen;
 	}
 
-	public ConversationPice getConversationPice() {
-		return conversationPice;
+	public ConversationPiece getConversationPiece() {
+		return conversationPiece;
 	}
 }

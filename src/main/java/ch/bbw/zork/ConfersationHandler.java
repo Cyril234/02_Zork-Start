@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class ConfersationHandler {
     /** Das aktuelle Gesprächsstück, das verarbeitet wird */
-    private ConversationPice conversationPice;
+    private ConversationPiece conversationPiece;
     /** Das Inventar des Spielers für Item-Interaktionen */
     private ArrayList<Item> inventory;
 
@@ -16,44 +16,44 @@ public class ConfersationHandler {
      * Verarbeitet die Spielereingabe während eines Gesprächs.
      * @param parser Der Parser zum Einlesen der Spielereingabe
      * @return true, wenn das Gespräch weiterläuft, false wenn es beendet wird
-     * @throws IllegalStateException wenn conversationPice null ist
+     * @throws IllegalStateException wenn conversationPiece null ist
      */
     public boolean getGetPlayerInput(Parser parser) {
         // Früher: getGetPlayerInput
-        if (conversationPice == null) {
-            throw new IllegalStateException("conversationPice must not be null");
+        if (conversationPiece == null) {
+            throw new IllegalStateException("conversationPiece must not be null");
         }
 
         // Wenn dieses Gesprächsstück schon abgehandelt wurde, ist hier Schluss
-        if (conversationPice.getAlreadyExecuted()) {
+        if (conversationPiece.getAlreadyExecuted()) {
             return false;
         }
 
         // Kein spezieller Aktions-Typ → normale Auswahl mit Antworten
-        if (conversationPice.getAktion() == null) {
+        if (conversationPiece.getAktion() == null) {
             return handleDialogueChoice(parser);
         }
 
         // Es gibt eine Aktion → je nach Typ behandeln
-        switch (conversationPice.getAktion()) {
+        switch (conversationPiece.getAktion()) {
             case END_NORMAL:
-                System.out.println(conversationPice.getNpcAusage());
+                System.out.println(conversationPiece.getNpcAusage());
                 return false;
 
             case END_GAME:
-                System.out.println(conversationPice.getNpcAusage());
+                System.out.println(conversationPiece.getNpcAusage());
                 System.out.println("You lost");
                 Game.finished = true;
                 return false;
 
             case GIVE_ITEM:
-                System.out.println(conversationPice.getNpcAusage());
-                inventory.add(conversationPice.getItem());
+                System.out.println(conversationPiece.getNpcAusage());
+                inventory.add(conversationPiece.getItem());
                 return false;
 
             default:
                 throw new IllegalStateException(
-                        "Unexpected ConversationAktion: " + conversationPice.getAktion()
+                        "Unexpected ConversationAktion: " + conversationPiece.getAktion()
                 );
         }
     }
@@ -63,12 +63,12 @@ public class ConfersationHandler {
      */
     private boolean handleDialogueChoice(Parser parser) {
         // NPC spricht
-        System.out.println(conversationPice.getNpcAusage());
+        System.out.println(conversationPiece.getNpcAusage());
 
         // Antwortmöglichkeiten Player
-        System.out.println("1: "+conversationPice.getAnswer(0).getAnswerPlayer());
-        System.out.println("2: "+conversationPice.getAnswer(1).getAnswerPlayer());
-        System.out.println("3: "+conversationPice.getAnswer(2).getAnswerPlayer());
+        System.out.println("1: "+conversationPiece.getAnswer(0).getAnswerPlayer());
+        System.out.println("2: "+conversationPiece.getAnswer(1).getAnswerPlayer());
+        System.out.println("3: "+conversationPiece.getAnswer(2).getAnswerPlayer());
 
         // Eingabe holen
         String decision = parser.getCommand(true).getCommandWord();
@@ -84,8 +84,8 @@ public class ConfersationHandler {
             case "2":
             case "3":
                 int index = Integer.parseInt(decision) - 1;
-                conversationPice.setAlreadyExecuted(true);
-                conversationPice = conversationPice.getAnswer(index);
+                conversationPiece.setAlreadyExecuted(true);
+                conversationPiece = conversationPiece.getAnswer(index);
                 break;
 
             default:
@@ -99,11 +99,11 @@ public class ConfersationHandler {
 
     /**
      * Initialisiert ein neues Gespräch mit einem NPC.
-     * @param conversationPice Das Gesprächsstück, das gestartet werden soll
+     * @param conversationPiece Das Gesprächsstück, das gestartet werden soll
      * @param inventory Das Inventar des Spielers
      */
-    public void setupConversation(ConversationPice conversationPice, ArrayList<Item> inventory){
-        this.conversationPice = conversationPice;
+    public void setupConversation(ConversationPiece conversationPiece, ArrayList<Item> inventory){
+        this.conversationPiece = conversationPiece;
         this.inventory = inventory;
     }
 }
