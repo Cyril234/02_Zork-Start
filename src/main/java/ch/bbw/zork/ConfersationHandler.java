@@ -2,10 +2,22 @@ package ch.bbw.zork;
 
 import java.util.ArrayList;
 
+/**
+ * Handler-Klasse zur Verwaltung von Gesprächen mit NPCs im Spiel.
+ * Verarbeitet Dialoge, Spielerantworten und spezielle Aktionen.
+ */
 public class ConfersationHandler {
+    /** Das aktuelle Gesprächsstück, das verarbeitet wird */
     private ConversationPice conversationPice;
+    /** Das Inventar des Spielers für Item-Interaktionen */
     private ArrayList<Item> inventory;
 
+    /**
+     * Verarbeitet die Spielereingabe während eines Gesprächs.
+     * @param parser Der Parser zum Einlesen der Spielereingabe
+     * @return true, wenn das Gespräch weiterläuft, false wenn es beendet wird
+     * @throws IllegalStateException wenn conversationPice null ist
+     */
     public boolean getGetPlayerInput(Parser parser) {
         // Früher: getGetPlayerInput
         if (conversationPice == null) {
@@ -85,6 +97,11 @@ public class ConfersationHandler {
         return true;
     }
 
+    /**
+     * Initialisiert ein neues Gespräch mit einem NPC.
+     * @param conversationPice Das Gesprächsstück, das gestartet werden soll
+     * @param inventory Das Inventar des Spielers
+     */
     public void setupConversation(ConversationPice conversationPice, ArrayList<Item> inventory){
         this.conversationPice = conversationPice;
         this.inventory = inventory;

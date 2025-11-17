@@ -13,15 +13,18 @@ import java.util.ArrayList;
 public class Game {
     public static boolean finished = false;
 
+    /** Parser zum Einlesen der Benutzereingaben */
     private Parser parser;
     private ArrayList<Room> visitedRooms = new ArrayList<>();
     private Room currentRoom;
-    // Zellen
+    /** Alle Räume des Spiels: Zellen, Gänge, Kreuzungen, spezielle Räume und Freiheitsräume */
     private Room zelle1, zelle2, zelle3, zelle4, zelle5, zelle6, zelle7, zelle8, zelle9, zelle10, zelle11, zelle12, gangNordSued1, gangNordSued2, gangWestEast1, gangWestEast2, gangWestEast3, gangWestEast4, gangWestEast5, gangWestEast6, kreuzung1, kreuzung2, kreuzung3, wachraum, waschraum, innenhof, kueche, esssaal, waffenkammer, checkpoint, freiheit1, freiheit2, freiheit3, freiheit4;
 
     private ArrayList<Item> inventory = new ArrayList<>();
     private final int maxWight = 10;
+    /** Flag, ob aktuell ein Gespräch aktiv ist */
     private boolean confersationActiv = false;
+    /** Handler zur Verwaltung von Gesprächen */
     private ConfersationHandler confersationHandler = new ConfersationHandler();
 
     private String map = """
@@ -37,21 +40,28 @@ public class Game {
                    			   |        |              |
                    		    [Zelle]     |            [Zelle]
                    		 		        |
-                   		 		        |       [Küche]
+                   		 		        |       [Küche(Leiter]
                    		 		        |          |
-            [Waffenkammer]---[Gang]---[Kreuzung]---[Gang]---[Innenhof]---[Freiheit]
-                                |          |         |
-                            [Wachraum]   [Gang]---[Küche]
-                            				|
-                            		   [Checkpoint]
-                            		        |
-                            		   [Freiheit]
+[Waffenkammer(Uniform, Sprengstoff---[Gang]---[Kreuzung]---[Gang]---[Innenhof]---[Freiheit]
+                            |           |         |
+                        [Wachraum]   [Gang]---[Esssahl(Löffel)]
+                            			|
+                            	  [Checkpoint]
+                            		    |
+                            		[Freiheit]
             """;
 
+    /**
+     * Standard-Konstruktor, verwendet System.in als Eingabequelle.
+     */
     public Game() {
         this(new Parser(System.in));
     }
 
+    /**
+     * Konstruktor mit einem benutzerdefinierten Parser (für Tests).
+     * @param parser Der Parser zum Einlesen der Eingaben
+     */
     public Game(Parser parser) {
         this.parser = parser;
         finished = false;
@@ -206,7 +216,7 @@ public class Game {
 
 
     /**
-     * Main play routine.  Loops until end of play.
+     * Hauptspielschleife. Läuft bis zum Ende des Spiels.
      */
     public void play() {
         printWelcome();
@@ -224,6 +234,9 @@ public class Game {
         System.out.println("Thank you for playing.  Good bye.");
     }
 
+    /**
+     * Gibt die Willkommensnachricht aus.
+     */
     private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to Zork!");
@@ -233,6 +246,11 @@ public class Game {
         System.out.println(currentRoom.longDescription());
     }
 
+    /**
+     * Verarbeitet ein Kommando des Spielers.
+     * @param command Das zu verarbeitende Kommando
+     * @return true, wenn das Spiel beendet werden soll
+     */
     private boolean processCommand(Command command) {
         if (command.isUnknown()) {
             System.out.println("I don't know what you mean...");
@@ -277,6 +295,10 @@ public class Game {
         }
     }
 
+    /**
+     * Nimmt ein Item aus dem aktuellen Raum auf.
+     * @param command Das Kommando mit dem Item-Namen als zweitem Wort
+     */
     private void takeItem(Command command) {
         if (currentRoom.getItems().isEmpty()) {
             System.out.println("Der Raum ist lehr");
@@ -306,11 +328,18 @@ public class Game {
         }
     }
 
+    /**
+     * Gibt die Hilfe mit allen verfügbaren Kommandos aus.
+     */
     private void printHelp() {
         System.out.println("Your command words are:");
         System.out.println(parser.showCommands());
     }
 
+    /**
+     * Legt ein Item aus dem Inventar im aktuellen Raum ab.
+     * @param command Das Kommando mit dem Item-Namen als zweitem Wort
+     */
     private void dropItem(Command command) {
         if (!command.hasSecondWord()) {
             System.out.println("please say which item");
@@ -330,6 +359,10 @@ public class Game {
         }
     }
 
+    /**
+     * Geht zum zuvor besuchten Raum zurück.
+     * @param command Das "back"-Kommando
+     */
     private void back(Command command) {
         if (command.hasSecondWord()) {
             System.out.println("back what?");
@@ -347,6 +380,11 @@ public class Game {
         }
     }
 
+    /**
+     * Bewegt den Spieler in einen anderen Raum.
+     * @param command Das "go"-Kommando mit der Richtung als zweitem Wort
+     * @return true, wenn das Spiel gewonnen wurde
+     */
     private boolean goRoom(Command command) {
         Room nextRoom = currentRoom.nextRoom(command.getSecondWord());
 
