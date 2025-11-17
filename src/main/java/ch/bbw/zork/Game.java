@@ -25,7 +25,7 @@ public class Game {
     /** Flag, ob aktuell ein Gespräch aktiv ist */
     private boolean confersationActiv = false;
     /** Handler zur Verwaltung von Gesprächen */
-    private ConfersationHandler confersationHandler = new ConfersationHandler();
+    private ConversationHandler conversationHandler = new ConversationHandler();
 
     private String map = """
                    		 [Zelle]   [Waschraum]  [Zelle]
@@ -225,7 +225,7 @@ public class Game {
         // execute them until the game is over.
         while (!finished) {
             if (confersationActiv) {
-                confersationActiv = confersationHandler.getGetPlayerInput(parser);
+                confersationActiv = conversationHandler.getGetPlayerInput(parser);
             } else {
                 Command command = parser.getCommand(false);
                 finished = processCommand(command);
@@ -274,7 +274,7 @@ public class Game {
                 back(command);
             } else if (commandWord.equals("investigate")) {
                 if (currentRoom.getItems().isEmpty()) {
-                    System.out.println("Der Raum ist lehr");
+                    System.out.println("Der Raum ist leer");
                 } else {
                     for (Item item : currentRoom.getItems()) {
                         System.out.println(item.getName() + "->" + item.getDescription());
@@ -301,7 +301,7 @@ public class Game {
      */
     private void takeItem(Command command) {
         if (currentRoom.getItems().isEmpty()) {
-            System.out.println("Der Raum ist lehr");
+            System.out.println("Der Raum ist leer");
         } else {
             boolean intemFound = false;
             ArrayList<Item> items = currentRoom.getItems();
@@ -410,7 +410,7 @@ public class Game {
         }
         if (currentRoom.getConversationPiece() != null) {
             confersationActiv = true;
-            confersationHandler.setupConversation(currentRoom.getConversationPiece(), inventory);
+            conversationHandler.setupConversation(currentRoom.getConversationPiece(), inventory);
         }
         return false;
     }

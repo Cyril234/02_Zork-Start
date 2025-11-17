@@ -16,7 +16,7 @@ public class ZorkIT {
     private Parser parser;
 
     @Mock
-    private ConfersationHandler confersationHandler;
+    private ConversationHandler conversationHandler;
 
     @Test
     public void gameStopsWhenQuitCommandIsIssued() {

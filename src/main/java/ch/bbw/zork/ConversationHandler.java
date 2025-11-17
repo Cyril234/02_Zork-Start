@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Handler-Klasse zur Verwaltung von Gesprächen mit NPCs im Spiel.
  * Verarbeitet Dialoge, Spielerantworten und spezielle Aktionen.
  */
-public class ConfersationHandler {
+public class ConversationHandler {
     /** Das aktuelle Gesprächsstück, das verarbeitet wird */
     private ConversationPiece conversationPiece;
     /** Das Inventar des Spielers für Item-Interaktionen */
