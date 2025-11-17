@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ConversationPice {
     private String npcAusage;
-    private List<ConversationPice> answers;
+    private List<ConversationPice> conversationPices;
     private String answerPlayer;
     private ConversationAktion aktion;
     private Item item;
@@ -13,12 +13,12 @@ public class ConversationPice {
 
     public ConversationPice(String npcAusage, ConversationPice a1, ConversationPice a2, ConversationPice a3) {
         this.npcAusage = npcAusage;
-        this.answers = Arrays.asList(a1, a2, a3);
+        this.conversationPices = Arrays.asList(a1, a2, a3);
     }
 
     public ConversationPice(String npcAusage, ConversationPice a1, ConversationPice a2, ConversationPice a3, String answerPlayer) {
         this.npcAusage = npcAusage;
-        this.answers = Arrays.asList(a1, a2, a3);
+        this.conversationPices = Arrays.asList(a1, a2, a3);
         this.answerPlayer = answerPlayer;
     }
 
@@ -44,15 +44,15 @@ public class ConversationPice {
     }
 
     public List<ConversationPice> getAnswers() {
-        return answers;
+        return conversationPices;
     }
 
-    public void setAnswers(List<ConversationPice> answers) {
-        this.answers = answers;
+    public void setAnswers(List<ConversationPice> conversationPices) {
+        this.conversationPices = conversationPices;
     }
 
     public ConversationPice getAnswer(int index){
-        return answers.get(index);
+        return conversationPices.get(index);
     }
 
     public String getAnswerPlayer() {

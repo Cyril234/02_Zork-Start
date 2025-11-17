@@ -55,10 +55,10 @@ public class Game {
     public Game(Parser parser) {
         this.parser = parser;
         finished = false;
-        Item uniform = new Item("", "Uniform", 2);
-        Item explosives = new Item("", "Sprengstoff", 5);
-        Item ladder = new Item("", "Leiter", 7);
-        Item spoon = new Item("", "Löffel", 1);
+        Item uniform = new Item("Eine gestohlene Wärteruniform, die dir hilft, unbemerkt durch das Gefängnis zu gelangen.", "Uniform", 2);
+        Item explosives = new Item("Ein kleiner Sprengsatz, stark genug, um eine schwache Mauer oder ein Gitter zu sprengen.", "Sprengstoff", 5);
+        Item ladder = new Item("Eine improvisierte Leiter, mit der du höhere Mauern überwinden kannst.", "Leiter", 7);
+        Item spoon = new Item("Ein unscheinbarer Metalllöffel, perfekt geeignet, um langsam einen Tunnel zu graben.", "Löffel", 1);
 
         ConversationPice wacheAusgangConversationPice1_1 = new ConversationPice("Die Wache nickt: „Holtz? Ja, der vergisst ständig, Meldung zu machen…“", "Sergeant Holtz. Er war ziemlich in Eile.", ConversationAktion.END_NORMAL);
         ConversationPice wacheAusgangConversationPice1_2 = new ConversationPice("Die Wache wird misstrauisch: „Vom Kommandanten selbst? Witzig, der ist heute gar nicht hier.“ Die Wache zieht ihre Pistole und sagt: „Ergib dich, Häftling. Das ist dein Ende!“", "Das kam direkt vom Kommandanten.", ConversationAktion.END_GAME);
@@ -195,9 +195,10 @@ public class Game {
         kueche.setParameter(null, null, gangWestEast6, null, itemsKueche);
         checkpoint.setParameter(gangNordSued2, null, freiheit4, null, uniform, wacheAusgangConversationPice);
 
-        freiheit1.setParameter(null, null, null, null, explosives);
-        freiheit2.setParameter(null, null, null, null, spoon);
-        freiheit3.setParameter(null, null, null, null, ladder);
+        freiheit1.setParameter(null, null, null, null,true, explosives);
+        freiheit2.setParameter(null, null, null, null, true, spoon);
+        freiheit3.setParameter(null, null, null, null, true, ladder);
+        freiheit4.setParameter(null, null, null, null, true);
 
         // Startposition
         currentRoom = zelle1; // Start in einer Zelle oben links
@@ -243,7 +244,7 @@ public class Game {
                 printHelp();
 
             } else if (commandWord.equals("go")) {
-                goRoom(command);
+                return goRoom(command);
 
             } else if (commandWord.equals("quit")) {
                 if (command.hasSecondWord()) {
@@ -267,7 +268,7 @@ public class Game {
                 takeItem(command);
             } else if (commandWord.equals("inf")) {
                 for (Item item : inventory) {
-                    System.out.println(item.getName());
+                    System.out.println(item.getName() + "->" + item.getDescription() + "; " + item.getWeight());
                 }
             } else if (commandWord.equals("map")) {
                 System.out.println(map);
@@ -346,32 +347,33 @@ public class Game {
         }
     }
 
-    private void goRoom(Command command) {
+    private boolean goRoom(Command command) {
         Room nextRoom = currentRoom.nextRoom(command.getSecondWord());
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
-            return;
+            return false;
         } else if (nextRoom.getItemToEnter() != null) {
             if (inventory.contains(nextRoom.getItemToEnter()) && !nextRoom.isOpen()) {
                 inventory.remove(nextRoom.getItemToEnter());
                 nextRoom.setItemToEnter(null);
             } else {
                 System.out.println("You need: " + nextRoom.getItemToEnter().getName());
-                return;
+                return false;
             }
         }
 
         visitedRooms.add(currentRoom);
         currentRoom = nextRoom;
         System.out.println(currentRoom.longDescription());
-        if (currentRoom.getWinnRoom()) {
-            finished = true;
+        if (currentRoom.isWinnRoom()) {
             System.out.println("You winn!!!");
+            return true;
         }
         if (currentRoom.getConversationPice() != null) {
             confersationActiv = true;
             confersationHandler.setupConversation(currentRoom.getConversationPice(), inventory);
         }
+        return false;
     }
 }

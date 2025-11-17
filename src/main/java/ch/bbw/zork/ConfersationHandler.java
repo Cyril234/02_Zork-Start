@@ -1,7 +1,5 @@
 package ch.bbw.zork;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ConfersationHandler {
@@ -9,49 +7,82 @@ public class ConfersationHandler {
     private ArrayList<Item> inventory;
 
     public boolean getGetPlayerInput(Parser parser) {
-        String inputLine;
+        // Früher: getGetPlayerInput
+        if (conversationPice == null) {
+            throw new IllegalStateException("conversationPice must not be null");
+        }
 
-
-
-
-        try {
-            if(!conversationPice.getAlreadyExecuted()){
-                if(conversationPice.getAktion() == null){
-                    System.out.println(conversationPice.getNpcAusage());
-                    System.out.println("1: "+conversationPice.getAnswer(0).getAnswerPlayer());
-                    System.out.println("2: "+conversationPice.getAnswer(1).getAnswerPlayer());
-                    System.out.println("3: "+conversationPice.getAnswer(2).getAnswerPlayer());
-                    String desision = parser.getCommand(true).getCommandWord();
-                    if(desision.trim().equals("1")){
-                        conversationPice.setAlreadyExecuted(true);
-                        conversationPice = conversationPice.getAnswer(0);
-                    } else if (desision.trim().equals("2")) {
-                        conversationPice.setAlreadyExecuted(true);
-                        conversationPice = conversationPice.getAnswer(1);
-                    }else if (desision.trim().equals("3")) {
-                        conversationPice.setAlreadyExecuted(true);
-                        conversationPice = conversationPice.getAnswer(2);
-                    }else{
-                        System.out.println("Your Answer has to be 1, 2 or 3!");
-                    }
-                    return true;
-                } else if (conversationPice.getAktion() == ConversationAktion.END_NORMAL) {
-                    System.out.println(conversationPice.getNpcAusage());
-                    return false;
-                }else if (conversationPice.getAktion() == ConversationAktion.END_GAME) {
-                    System.out.println("You lost");
-                    Game.finished = true;
-                    return false;
-                }else {
-                    System.out.println(conversationPice.getNpcAusage());
-                    inventory.add(conversationPice.getItem());
-                    return false;
-                }
-            }
-            return false;
-        } catch (Exception e) {
+        // Wenn dieses Gesprächsstück schon abgehandelt wurde, ist hier Schluss
+        if (conversationPice.getAlreadyExecuted()) {
             return false;
         }
+
+        // Kein spezieller Aktions-Typ → normale Auswahl mit Antworten
+        if (conversationPice.getAktion() == null) {
+            return handleDialogueChoice(parser);
+        }
+
+        // Es gibt eine Aktion → je nach Typ behandeln
+        switch (conversationPice.getAktion()) {
+            case END_NORMAL:
+                System.out.println(conversationPice.getNpcAusage());
+                return false;
+
+            case END_GAME:
+                System.out.println(conversationPice.getNpcAusage());
+                System.out.println("You lost");
+                Game.finished = true;
+                return false;
+
+            case GIVE_ITEM:
+                System.out.println(conversationPice.getNpcAusage());
+                inventory.add(conversationPice.getItem());
+                return false;
+
+            default:
+                throw new IllegalStateException(
+                        "Unexpected ConversationAktion: " + conversationPice.getAktion()
+                );
+        }
+    }
+
+    /**
+     * Behandelt die normale Dialog-Situation mit 3 auswählbaren Antworten.
+     */
+    private boolean handleDialogueChoice(Parser parser) {
+        // NPC spricht
+        System.out.println(conversationPice.getNpcAusage());
+
+        // Antwortmöglichkeiten Player
+        System.out.println("1: "+conversationPice.getAnswer(0).getAnswerPlayer());
+        System.out.println("2: "+conversationPice.getAnswer(1).getAnswerPlayer());
+        System.out.println("3: "+conversationPice.getAnswer(2).getAnswerPlayer());
+
+        // Eingabe holen
+        String decision = parser.getCommand(true).getCommandWord();
+        if (decision == null) {
+            System.out.println("Your answer has to be 1, 2 or 3!");
+            return true; // Dialog läuft weiter
+        }
+
+        decision = decision.trim();
+
+        switch (decision) {
+            case "1":
+            case "2":
+            case "3":
+                int index = Integer.parseInt(decision) - 1;
+                conversationPice.setAlreadyExecuted(true);
+                conversationPice = conversationPice.getAnswer(index);
+                break;
+
+            default:
+                System.out.println("Your answer has to be 1, 2 or 3!");
+                break;
+        }
+
+        // true = Dialog läuft weiter
+        return true;
     }
 
     public void setupConversation(ConversationPice conversationPice, ArrayList<Item> inventory){

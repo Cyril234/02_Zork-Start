@@ -1,11 +1,9 @@
 package ch.bbw.zork;
 
-import java.util.HashMap;
-
 public class Item {
-    private String description;
-    private String name;
-    private int weight;
+    private final String description;
+    private final String name;
+    private final int weight;
 
     public Item(String description, String name, int weight) {
         this.description = description;
