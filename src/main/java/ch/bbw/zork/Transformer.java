@@ -7,9 +7,10 @@ public class Transformer extends Item{
     /**
      * Konstruktor für ein Item.
      *
-     * @param description Die Beschreibung des Items
-     * @param name        Der Name des Items
-     * @param weight      Das Gewicht des Items
+     * @param description       Die Beschreibung des Items
+     * @param name              Der Name des Items
+     * @param weight            Das Gewicht des Items
+      * @param descriptionCar   Die Beschreibeung für den Transformer
      */
     public Transformer(String description, String descriptionCar, String name, int weight) {
         super(description, name, weight);
