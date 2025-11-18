@@ -69,6 +69,7 @@ public class Game {
         Item explosives = new Item("Ein kleiner Sprengsatz, stark genug, um eine schwache Mauer oder ein Gitter zu sprengen.", "Sprengstoff", 5);
         Item ladder = new Item("Eine improvisierte Leiter, mit der du höhere Mauern überwinden kannst.", "Leiter", 7);
         Item spoon = new Item("Ein unscheinbarer Metalllöffel, perfekt geeignet, um langsam einen Tunnel zu graben.", "Löffel", 1);
+        Transformer transformer = new Transformer("a toy robot", "a toy Car", "Transformer", 1);
 
         ConversationPiece wacheAusgangConversationPiece1_1 = new ConversationPiece("Die Wache nickt: „Holtz? Ja, der vergisst ständig, Meldung zu machen…“", "Sergeant Holtz. Er war ziemlich in Eile.", ConversationAktion.END_NORMAL);
         ConversationPiece wacheAusgangConversationPiece1_2 = new ConversationPiece("Die Wache wird misstrauisch: „Vom Kommandanten selbst? Witzig, der ist heute gar nicht hier.“ Die Wache zieht ihre Pistole und sagt: „Ergib dich, Häftling. Das ist dein Ende!“", "Das kam direkt vom Kommandanten.", ConversationAktion.END_GAME);
@@ -163,7 +164,9 @@ public class Game {
         freiheit4 = new Room("Freiheit 4: Dank der Uniform aus der Waffenkammer wirkst du wie eine echte Wache. Du gehst am Checkpoint vorbei und trittst in den Regen hinaus. Du hast sie getäuscht – du bist frei.");
 
         zelle1.setParameter(null, gangWestEast1, null, null);
-        zelle2.setParameter(null, null, gangWestEast1, null);
+        ArrayList<Item> itemsZelle2 = new ArrayList<>();
+        itemsZelle2.add(transformer);
+        zelle2.setParameter(null, null, gangWestEast1, null, itemsZelle2);
         zelle3.setParameter(gangWestEast1, null, null, null);
 
         zelle4.setParameter(null, null, gangWestEast2, null);
@@ -290,6 +293,8 @@ public class Game {
                 }
             } else if (commandWord.equals("map")) {
                 System.out.println(map);
+            } else if (commandWord.equals("transform")) {
+                transformItem(command);
             }
             return false;
         }
@@ -350,6 +355,32 @@ public class Game {
                     itemFound = true;
                     inventory.remove(item);
                     currentRoom.getItems().add(item);
+                    break;
+                }
+            }
+            if (!itemFound) {
+                System.out.println("you don't have this item in your inventory");
+            }
+        }
+    }
+
+    /**
+     * Transformpt den Transformer.
+     * @param command Das Kommando mit dem Item-Namen als zweitem Wort
+     */
+    private void transformItem(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("please say which item");
+        } else {
+            boolean itemFound = false;
+            for (Item item : inventory) {
+                if (item.getName().equals(command.getSecondWord())) {
+                    itemFound = true;
+                    if (item instanceof Transformer) {
+                        ((Transformer) item).transform();
+                    }else {
+                        System.out.println("This isn't a Transformer!");
+                    }
                     break;
                 }
             }

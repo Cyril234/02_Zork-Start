@@ -44,18 +44,15 @@ public class Parser {
 					if (inConversation|validCommandWords.isCommand(tokens[0])) {
 						return new Command(tokens[0]);
 					} else {
-						// TODO: refactor this and that ???
 						return new Command(null);
 					}
 				default:
 					System.out.println("Input is to long");
 					return new Command(null);
-					// TODO: handle this error with an exception and non ???
 			}
 		} catch (java.io.IOException exc) {
 			System.out.println("There was an error during reading: " + exc.getMessage());
 		}
-		// TODO: handle error ???
 		return new Command(null);
 	}
 

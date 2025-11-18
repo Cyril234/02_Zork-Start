@@ -5,7 +5,7 @@ package ch.bbw.zork;
  * Items können vom Spieler aufgenommen, getragen und verwendet werden.
  */
 public class Item {
-    private final String description;
+    private String description;
     private final String name;
     private final int weight;
 
@@ -31,5 +31,9 @@ public class Item {
 
     public int getWeight() {
         return weight;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
